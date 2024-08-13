@@ -2,12 +2,13 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Form } from "@/components/ui/form";
-import FormInput from "../FormInput";
-import user from "../../../public/assets/icons/user.svg";
-import { Button } from "../ui/button";
+import FormInput from "./forms/FormInput";
+import userIcon from "../../public/assets/icons/user.svg";
+import emailIcon from "../../public/assets/icons/email.svg";
+import { Button } from "./ui/button";
 import Link from "next/link";
 
-function UserForm() {
+function Login() {
   const form = useForm({
     defaultValues: {
       email: "",
@@ -22,13 +23,13 @@ function UserForm() {
   return (
     <div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 my-3">
           <FormInput
             control={form.control}
             label="Email"
-            placeholder="Email/Username "
+            placeholder="user@email.com"
             name="email"
-            iconSrc={user}
+            iconSrc={emailIcon}
             iconAlt="user"
             type="email"
           />
@@ -37,16 +38,16 @@ function UserForm() {
             label="Password"
             placeholder="Password"
             name="password"
-            iconSrc={user}
+            iconSrc={userIcon}
             iconAlt="user"
             type="password"
           />
           <Button type="submit" className="border border-gray-300">
-            Submit
+            Login
           </Button>
         </form>
         <p>
-          Don't have an account?
+          Do not have an account?
           <i>
             <Link href="/register">Get started Here</Link>
           </i>
@@ -56,4 +57,4 @@ function UserForm() {
   );
 }
 
-export default UserForm;
+export default Login;
