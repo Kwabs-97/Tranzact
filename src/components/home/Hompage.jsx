@@ -1,14 +1,11 @@
 import React from "react";
+import UserForm from "../forms/UserForm";
 
 function Hompage() {
   return (
-    <div className="w-screen h-screen flex items-center justify-center ">
-      <div className="backdrop-blur-lg backdrop-saturate-150 bg-amber-500">
-        <header>
-          <h4>Hi there 👋</h4>
-          <p>Welcome to Tranz@</p>
-        </header>
-      </div>
+    <div className="w-screen h-screen flex items-center justify-center flex-col ">
+      <h4>Hi there 👋 Welcome to Tranz@</h4>
+      <UserForm />
     </div>
   );
 }

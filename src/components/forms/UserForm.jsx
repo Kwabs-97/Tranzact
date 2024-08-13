@@ -1,51 +1,58 @@
+"use client";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
+import FormInput from "../FormInput";
+import user from "../../../public/assets/icons/user.svg";
+import { Button } from "../ui/button";
+import Link from "next/link";
 
 function UserForm() {
   const form = useForm({
     defaultValues: {
-      firstname: "",
-      lastname: "",
       email: "",
-      phone: "",
+      password: "",
     },
   });
 
-  const { register, handleSubmit } = form;
+  const onSubmit = (data) => {
+    console.log(data);
+  };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input placeholder="shadcn" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Submit</Button>
-      </form>
-    </Form>
+    <div>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <FormInput
+            control={form.control}
+            label="Email"
+            placeholder="Email/Username "
+            name="email"
+            iconSrc={user}
+            iconAlt="user"
+            type="email"
+          />
+          <FormInput
+            control={form.control}
+            label="Password"
+            placeholder="Password"
+            name="password"
+            iconSrc={user}
+            iconAlt="user"
+            type="password"
+          />
+          <Button type="submit" className="border border-gray-300">
+            Submit
+          </Button>
+        </form>
+        <p>
+          Don't have an account?
+          <i>
+            <Link href="/register">Get started Here</Link>
+          </i>
+        </p>
+      </Form>
+    </div>
   );
 }
 
