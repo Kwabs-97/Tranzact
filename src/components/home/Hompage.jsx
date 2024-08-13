@@ -1,12 +1,14 @@
 import React from "react";
 import Login from "../Login";
+import Container from "../Container";
 
 function Hompage() {
   return (
-    <div className="w-screen h-screen flex items-center justify-center flex-col ">
-      <h4>Hi there 👋 Welcome to Tranz@</h4>
+    <Container>
+      <h4>Hi there 👋 Welcome Back to Tranz@</h4>
+      <p>Log in to continue</p>
       <Login />
-    </div>
+    </Container>
   );
 }
 

@@ -26,7 +26,7 @@ const RenderInput = ({ iconSrc, iconAlt, placeholder, type, field }) => {
           placeholder={placeholder}
           {...field}
           type={type}
-          className="border-none bg-transparent focus:outline-none"
+          className="border-none bg-transparent focus:outline-none w-full"
         />
       </FormControl>
     </div>
