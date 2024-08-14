@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import FormInput from "./forms/FormInput";
 import userIcon from "../../public/assets/icons/user.svg";
@@ -11,6 +12,7 @@ import FormContainer from "./forms/FormContainer";
 import CustomButtom from "./CustomButtom";
 import Oauth from "./Oauth";
 import { Separator } from "./ui/separator";
+import { User } from "@/lib/validation";
 
 function Login() {
   const form = useForm({
@@ -18,10 +20,18 @@ function Login() {
       email: "",
       password: "",
     },
+    resolver: zodResolver(User),
   });
 
+  //manage form state
+  const { errors, isLoading, isSubmitting, isSubmitSuccessful } =
+    form.formState;
+
   const onSubmit = (data) => {
-    console.log(data);
+    setTimeout(() => {
+      console.log(data);
+      console.log("submit");
+    }, 3000);
   };
 
   return (
@@ -50,7 +60,9 @@ function Login() {
           Forgot password?
         </Link>
 
-        <CustomButtom className="bg-white text-black">Login</CustomButtom>
+        <CustomButtom className="bg-white text-black" disabled={isSubmitting}>
+          Login
+        </CustomButtom>
       </FormContainer>
 
       <aside className="flex flex-col gap-6">
