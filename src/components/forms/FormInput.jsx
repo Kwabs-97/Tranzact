@@ -37,7 +37,7 @@ const RenderInput = ({
             placeholder={placeholder}
             {...field}
             type={type}
-            className="border-none bg-transparent focus:outline-none w-full"
+            className="border-none bg-transparent focus:outline-dashed w-full"
           />
         </FormControl>
       </div>
