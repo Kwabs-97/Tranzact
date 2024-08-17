@@ -23,6 +23,7 @@ export default function RootLayout({ children }) {
           font_Sans.variable
         )}
         suppressHydrationWarning={true}
+        suppressContentEditableWarning={true}
       >
         <ThemeProvider
           attribute="class"

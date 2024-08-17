@@ -11,6 +11,7 @@ export default async function dbConnect() {
       console.log("error in connection" + err);
       process.exit();
     });
+    return connect;
   } catch (error) {
     console.log("Error connecting to mongoDB");
     console.log(error);

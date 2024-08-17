@@ -1,26 +1,27 @@
-import dbConnect from "../../db/config";
-import User from "../../models/user.model";
+import dbConnect from "@/db/config";
+import User from "../models/user.model";
 import bcryptjs from "bcryptjs";
+
 dbConnect();
 
 export const _findUserByEmail = async (email) => {
   try {
     const user = await User.findOne({ email });
-    if (user) return { message: "user found", user };
-    return { message: "user not found" };
+    return user;
   } catch (error) {
-    console.log(error);
-
-    return "error finding user", error;
+    console.log("Error finding user:", error);
+    throw error;
   }
 };
 
 export const _createNewUser = async (email, username, password) => {
   try {
-    const isUserExists = await _findUserByEmail(email);
-    if (isUserExists) return { message: "user with this email already exists" };
+    const existingUser = await _findUserByEmail(email);
+    if (existingUser) {
+      return { message: "User with this email already exists" };
+    }
 
-    const saltRounds = await bcryptjs.genSalt(20);
+    const saltRounds = await bcryptjs.genSalt(10); // 10 is a common default
     const hash_password = await bcryptjs.hash(password, saltRounds);
 
     const newUser = new User({
@@ -31,26 +32,37 @@ export const _createNewUser = async (email, username, password) => {
 
     const saveUser = await newUser.save();
     return {
-      message: "user created successfully",
+      message: "User created successfully",
       data: { email: saveUser.email, username: saveUser.username },
     };
   } catch (error) {
-    console.log("error creating new user", error);
-    return "error creating user account", error;
+    console.log("Error creating new user:", error);
+    throw error;
   }
 };
 
 export const _verifyUser = async (email, password) => {
   try {
     const user = await _findUserByEmail(email);
-    const isMatch = await bcryptjs.compare(password, user.hash_password);
+    if (!user) {
+      return { message: "User not found" };
+    }
 
-    if (user && isMatch) {
-      return true;
+    const isMatch = await bcryptjs.compare(password, user.password);
+
+    if (isMatch) {
+      return {
+        data: {
+          id: user._id,
+          username: user.username,
+          email: user.email,
+        },
+      };
     } else {
-      return false;
+      return { message: "Invalid credentials" };
     }
   } catch (error) {
-    console.log(error);
+    console.log("Error verifying user:", error);
+    throw error;
   }
 };

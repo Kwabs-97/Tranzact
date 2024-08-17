@@ -1,4 +1,6 @@
+"use client";
 import React from "react";
+import axios from "axios";
 import FormContainer from "./forms/FormContainer";
 import FormInput from "./forms/FormInput";
 import { useForm } from "react-hook-form";
@@ -12,14 +14,19 @@ import Oauth from "./Oauth";
 function Register() {
   const form = useForm({
     defaultValues: {
-      firstname: "",
-      lastname: "",
+      username: "",
       email: "",
+      password: "",
     },
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      const response = await axios.post("api/users/register", data);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div className="w-full px-10 ">
