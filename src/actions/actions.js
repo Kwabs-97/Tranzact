@@ -10,7 +10,7 @@ export const _findUserByEmail = async (email) => {
     return user;
   } catch (error) {
     console.log("Error finding user:", error);
-    throw error;
+    throw new Error("database query failed");
   }
 };
 
@@ -18,7 +18,7 @@ export const _createNewUser = async (email, username, password) => {
   try {
     const existingUser = await _findUserByEmail(email);
     if (existingUser) {
-      return { message: "User with this email already exists" };
+      return { error: "user already exists", statusCode: 409 };
     }
 
     const saltRounds = await bcryptjs.genSalt(10); // 10 is a common default
@@ -30,10 +30,11 @@ export const _createNewUser = async (email, username, password) => {
       username,
     });
 
-    const saveUser = await newUser.save();
+    const savedUser = await newUser.save();
     return {
-      message: "User created successfully",
-      data: { email: saveUser.email, username: saveUser.username },
+      user: savedUser,
+      statusCode: 201,
+      successMessage: "user created successfully",
     };
   } catch (error) {
     console.log("Error creating new user:", error);
