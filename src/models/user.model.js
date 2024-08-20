@@ -16,6 +16,5 @@ const tranzactSchema = new mongoose.Schema({
   },
 });
 
-const User =
-  mongoose.models.Tranzact || mongoose.model("Tranzact", tranzactSchema);
+const User = mongoose.models.Users || mongoose.model("Users", tranzactSchema);
 export default User;

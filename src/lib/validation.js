@@ -3,18 +3,12 @@ import * as z from "zod";
 const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
 export const User = z.object({
-  firstname: z
+  username: z
     .string({
-      required_error: "Please your firstname",
+      required_error: "Please enter your username",
     })
-    .trim()
-    .optional(),
-  lastname: z
-    .string({
-      required_error: "Please your lastname",
-    })
-    .trim()
-    .optional(),
+    .min(5, { message: "username must contain at least 5 characters" })
+    .trim(),
   password: z
     .string({ required_error: "Password is required" })
     .min(8, { message: "Password should contain at least 8 characters" })

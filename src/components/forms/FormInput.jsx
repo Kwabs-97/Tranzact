@@ -9,17 +9,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
-import ErrorMessage from "../ErrorMessage";
 
-const RenderInput = ({
-  iconSrc,
-  iconAlt,
-  placeholder,
-  type,
-  field,
-
-  name,
-}) => {
+const RenderInput = ({ iconSrc, iconAlt, placeholder, type, field }) => {
   return (
     <div className="flex flex-col gap-1">
       <div className="flex rounded-md border border-dark-500 bg-dark-400">

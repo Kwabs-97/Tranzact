@@ -18,7 +18,7 @@ export const _createNewUser = async (email, username, password) => {
   try {
     const existingUser = await _findUserByEmail(email);
     if (existingUser) {
-      return { error: "user already exists", statusCode: 409 };
+      return { error: "user with this email already exists", statusCode: 409 };
     }
 
     const saltRounds = await bcryptjs.genSalt(10); // 10 is a common default

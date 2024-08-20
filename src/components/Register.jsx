@@ -1,36 +1,70 @@
 "use client";
 import React from "react";
 import axios from "axios";
-import FormContainer from "./forms/FormContainer";
-import FormInput from "./forms/FormInput";
+import { useState, useEffect } from "react";
+
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import FormContainer from "./forms/FormContainer";
+import { User } from "@/lib/validation";
+
+import FormInput from "./forms/FormInput";
 import emailIcon from "../../public/assets/icons/email.svg";
 import lockIcon from "../../public/assets/icons/lock.svg";
 import userIcon from "../../public/assets/icons/user.svg";
 import CustomButtom from "./CustomButtom";
 import { Separator } from "@radix-ui/react-separator";
+import { useToast } from "@/components/ui/use-toast";
+import { LoadingSpinner } from "./ui/loading-spinner";
+
 import Oauth from "./Oauth";
+import ErrorMessage from "./ErrorMessage";
+import { Button } from "./ui/button";
 
 function Register() {
+  const [formStatus, setformStatus] = useState({ message: "", type: "" });
   const form = useForm({
     defaultValues: {
       username: "",
-      email: "",
       password: "",
+      email: "",
     },
+    resolver: zodResolver(User),
   });
 
   const onSubmit = async (data) => {
+    setformStatus({ message: "", type: "" });
     try {
       const response = await axios.post("api/users/register", data);
+      if (response.status === 201) {
+        setformStatus({ message: response.data.message, type: "success" });
+      }
       console.log(response);
+      form.reset();
     } catch (error) {
+      setformStatus({ message: error.response.data.message, type: "error" });
       console.log(error);
     }
   };
+
+  //toast notification on success
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (formStatus.type === "success") {
+      toast({
+        title: "congratulations",
+        description: formStatus.message,
+      });
+    }
+  }, [toast, formStatus]);
+
+  //submit button state handling
+  const { isSubmitting, isSubmitSuccessful } = form.formState;
+
   return (
     <div className="w-full px-10 ">
-      <FormContainer onSubmit={onSubmit} form={form} className="space-y-5">
+      <FormContainer onSubmit={onSubmit} form={form} className="space-y-1">
         <FormInput
           control={form.control}
           label="Username"
@@ -60,8 +94,16 @@ function Register() {
           type="password"
         />
 
-        <CustomButtom className="bg-white text-black">Get started</CustomButtom>
+        <CustomButtom
+          className="bg-white text-black"
+          disabled={isSubmitting && isSubmitSuccessful}
+        >
+          {isSubmitting ? <LoadingSpinner /> : "Get started"}
+        </CustomButtom>
       </FormContainer>
+      {formStatus.type === "error" && (
+        <ErrorMessage message={formStatus.message} />
+      )}
       <aside className="flex flex-col gap-3">
         <section className="flex flex-row gap-2 items-center w-full overflow-hidden justify-center">
           <Separator className=" bg-gray-500 w-2/3" /> <p>OR</p>
