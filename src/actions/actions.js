@@ -1,5 +1,8 @@
 import dbConnect from "@/db/config";
 import User from "../models/user.model";
+import { ref, getDownloadURL, listAll } from "firebase/storage";
+import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
+import { storage, db } from "@/firebase/firebase";
 import bcryptjs from "bcryptjs";
 
 dbConnect();
@@ -65,5 +68,53 @@ export const _verifyUser = async (email, password) => {
   } catch (error) {
     console.log("Error verifying user:", error);
     throw error;
+  }
+};
+
+export const listFilesAndGetUrls = async () => {
+  try {
+    const listRef = ref(storage, "bags/");
+    const res = await listAll(listRef);
+
+    const files = await Promise.all(
+      res.items.map(async (itemRef) => {
+        const url = await getDownloadURL(itemRef);
+        return {
+          name: itemRef.name,
+          url: url,
+        };
+      })
+    );
+
+    return files;
+  } catch (error) {
+    console.error("Error listing files", error);
+  }
+};
+
+export const uploadFileDataToDB = async () => {
+  try {
+    const files = await listFilesAndGetUrls();
+    const collectionRef = collection(db, "bags");
+
+    for (const file of files) {
+      //query to check if file already exists.
+
+      const q = query(collectionRef, where("url", "==", file.url));
+      const querySnapshot = await getDocs(q);
+      if (querySnapshot.empty) {
+        await addDoc(collectionRef, {
+          name: file.name,
+          url: file.url,
+          createdAt: new Date(),
+        });
+      } else {
+        console.log("file already exists");
+      }
+    }
+
+    console.log("Data successfully uploaded to firestore");
+  } catch (error) {
+    console.error("Error uploading files to firestore", error);
   }
 };
