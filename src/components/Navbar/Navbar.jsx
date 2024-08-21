@@ -1,34 +1,19 @@
+"use client";
+import MenuIcon from "@/assets/icons/MenuIcon";
+import ShoppingCartIcon from "@/assets/icons/ShoppingCartIcon";
+import Profile from "@/assets/icons/UserRoundIcon";
 import React from "react";
-import Link from "next/link";
-
-import homeIcon from "../../../public/assets/icons/home.svg";
-import userIcon from "../../../public/assets/icons/user.svg";
-import Image from "next/image";
 
 function Navbar({ useParams }) {
-  const links = [
-    {
-      icon: homeIcon,
-      link: "/",
-    },
-    {
-      icon: userIcon,
-      link: "/profile",
-    },
-  ];
   return (
-    <nav>
-      <ul className="flex flex-row items-center">
-        {links.map((link) => {
-          return (
-            <li key={link.link} className="px-4">
-              <Image src={link.icon} alt={link.link}>
-                <Link href={link.link}>{link.link}</Link>
-              </Image>
-            </li>
-          );
-        })}
-      </ul>
+    <nav className="px-6 py-6 flex flex-row items-center justify-between w-screen">
+      <div className="border border-orange-500 border-solid p-2 rounded-md">
+        <span>DixstroBags</span>
+      </div>
+      <div className="flex flex-row gap-8">
+        <ShoppingCartIcon />
+        <Profile />
+      </div>
     </nav>
   );
 }

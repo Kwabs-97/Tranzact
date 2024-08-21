@@ -1,11 +1,6 @@
 function Container({ children }) {
   return (
-    <div
-      className="w-screen h-screen flex items-center justify-center flex-col
-    "
-    >
-      {children}
-    </div>
+    <div className="flex items-center justify-center flex-col">{children}</div>
   );
 }
 

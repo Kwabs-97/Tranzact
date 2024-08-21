@@ -1,8 +1,8 @@
 import React from "react";
 import { Menu } from "lucide-react";
 
-function Hamburger() {
+function MenuIcon() {
   return <Menu />;
 }
 
-export default Hamburger;
+export default MenuIcon;

@@ -7,8 +7,7 @@ function Hompage() {
   return (
     <Container>
       <Navbar />
-      <h4>Hi there 👋 Welcome Back to Tranz@</h4>
-      <p>Log in to continue</p>
+      <h4>Hi there 👋 Welcome Back to DixtroBags</h4>
     </Container>
   );
 }
