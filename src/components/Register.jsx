@@ -46,7 +46,7 @@ function Register() {
     }
   };
 
-  //toast notification on success
+  // toast notification on success
   const { toast } = useToast();
 
   useEffect(() => {
@@ -58,7 +58,7 @@ function Register() {
     }
   }, [toast, formStatus]);
 
-  //submit button state handling
+  // submit button state handling
   const { isSubmitting } = form.formState;
 
   return (

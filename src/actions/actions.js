@@ -1,5 +1,6 @@
 import dbConnect from "@/db/config";
 import User from "../models/user.model";
+import Bags from "@/models/bags.model";
 import { ref, getDownloadURL, listAll } from "firebase/storage";
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
 import { storage, db } from "@/firebase/firebase";
@@ -70,7 +71,7 @@ export const _verifyUser = async (email, password) => {
   }
 };
 
-export const listFilesAndGetUrls = async () => {
+export const getImageUrls = async () => {
   try {
     const listRef = ref(storage, "bags/");
     const res = await listAll(listRef);
@@ -84,8 +85,7 @@ export const listFilesAndGetUrls = async () => {
         };
       })
     );
-
-    console.log(files);
+    console.log("image urls successfully retrieved");
     return files;
   } catch (error) {
     console.error("Error listing files", error);
@@ -94,27 +94,35 @@ export const listFilesAndGetUrls = async () => {
 
 export const uploadFileDataToDB = async () => {
   try {
-    const files = await listFilesAndGetUrls();
-    const collectionRef = collection(db, "bags");
+    const files = await getImageUrls();
+    // const collectionRef = collection(db, "bags");
 
     for (const file of files) {
       //query to check if file already exists.
 
-      const q = query(collectionRef, where("url", "==", file.url));
-      const querySnapshot = await getDocs(q);
-      if (querySnapshot.empty) {
-        await addDoc(collectionRef, {
+      const existingBag = await Bags.findOne({ url: file.url });
+      if (existingBag) {
+        console.log("file already exists");
+        return null;
+      } else {
+        const newBag = new Bags({
           name: file.name,
           url: file.url,
-          createdAt: new Date(),
         });
-      } else {
-        console.log("file already exists");
+        const saveBag = await newBag.save();
       }
     }
-
-    console.log("Data successfully uploaded to firestore");
+    console.log("Data successfully uploaded to database");
   } catch (error) {
-    console.error("Error uploading files to firestore", error);
+    console.error("Error uploading files to database", error);
   }
 };
+
+// export const fetchBags = async () => {
+//   const bagsCollection = collection(db, "bags");
+//   const querySnapshot = await getDocs(bagsCollection);
+//   querySnapshot.forEach((doc) => {
+//     console.log(doc.id, "=>", doc.data());
+
+//   });
+// };

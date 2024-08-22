@@ -1,7 +1,7 @@
 import React from "react";
 
-function ErrorMessage({ children }) {
-  return <p className="text-red-700">{children}</p>;
+function ErrorMessage({ message }) {
+  return <p className="text-red-700">{message}</p>;
 }
 
 export default ErrorMessage;
