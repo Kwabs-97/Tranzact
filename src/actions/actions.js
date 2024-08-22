@@ -6,7 +6,6 @@ import { storage, db } from "@/firebase/firebase";
 import bcryptjs from "bcryptjs";
 
 dbConnect();
-
 export const _findUserByEmail = async (email) => {
   try {
     const user = await User.findOne({ email });
@@ -86,6 +85,7 @@ export const listFilesAndGetUrls = async () => {
       })
     );
 
+    console.log(files);
     return files;
   } catch (error) {
     console.error("Error listing files", error);

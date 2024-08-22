@@ -2,7 +2,6 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
-import RunOnStartup from "@/components/RunOnStartup";
 
 const font_Sans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -26,7 +25,6 @@ export default function RootLayout({ children }) {
         suppressHydrationWarning={true}
         suppressContentEditableWarning={true}
       >
-        <RunOnStartup />
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
