@@ -10,10 +10,8 @@ function Hompage() {
       <header>
         <h4>Hi there 👋 Welcome Back to DixstroBags</h4>
       </header>
-      <main className="max-h-screen max-w-screen-sm ">
-        <div className="border">
-          <Items />
-        </div>
+      <main className="border-t-2 border-gray-400 p-1 rounded-md">
+        <Items />
       </main>
     </Container>
   );

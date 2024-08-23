@@ -2,8 +2,7 @@ import dbConnect from "@/db/config";
 import User from "../models/user.model";
 import Bags from "@/models/bags.model";
 import { ref, getDownloadURL, listAll } from "firebase/storage";
-import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
-import { storage, db } from "@/firebase/firebase";
+import { storage } from "@/firebase/firebase";
 import bcryptjs from "bcryptjs";
 
 dbConnect();
@@ -118,11 +117,21 @@ export const uploadFileDataToDB = async () => {
   }
 };
 
-// export const fetchBags = async () => {
-//   const bagsCollection = collection(db, "bags");
-//   const querySnapshot = await getDocs(bagsCollection);
-//   querySnapshot.forEach((doc) => {
-//     console.log(doc.id, "=>", doc.data());
+export const fetchImageData = async () => {
+  try {
+    const imageData = await Bags.find();
 
-//   });
-// };
+    if (!imageData)
+      return {
+        message: "error",
+        statusCode: 401,
+      };
+    return {
+      imageData,
+      message: "success",
+      statusCode: 200,
+    };
+  } catch (error) {
+    console.log("Error fetching image data", error);
+  }
+};
