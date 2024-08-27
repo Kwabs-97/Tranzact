@@ -4,10 +4,16 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
 import axios from "axios";
-import CustomButtom from "../CustomButtom";
+
 import { LoadingSpinner } from "../ui/loading-spinner";
 import Skeleton from "../Skeleton";
 import { Button } from "../ui/button";
+
+//import action creators for use in our component
+import { addToCart } from "@/lib/features/cart/cart-slice";
+
+//import event triggers to the store
+import { useAppDispatch } from "@/lib/hooks";
 
 function Items() {
   const [imgData, setImgData] = useState([]);
@@ -23,6 +29,12 @@ function Items() {
     fetchBagsData();
     setLoading(false);
   }, []);
+
+  const dispatch = useAppDispatch();
+
+  function handleAddToCart() {
+    dispatch(addToCart());
+  }
 
   return (
     <div className="h-[calc(100vh-186px)] overflow-scroll px-3 py-8">
@@ -49,7 +61,10 @@ function Items() {
                   blurDataURL="https://placehold.co/40x40"
                 />
                 <p>Price:</p>
-                <Button className="p-1 text-sm border border-white">
+                <Button
+                  className="p-1 text-sm border border-white"
+                  onClick={handleAddToCart}
+                >
                   Add to cart
                 </Button>
               </div>
